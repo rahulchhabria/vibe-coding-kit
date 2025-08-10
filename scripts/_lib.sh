@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Source notification helper if available
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [[ -f "$SCRIPT_DIR/notify.sh" ]]; then
+  source "$SCRIPT_DIR/notify.sh"
+fi
+
 # Logging helpers
 bold="$(tput bold 2>/dev/null || true)"
 reset="$(tput sgr0 2>/dev/null || true)"
@@ -12,13 +18,44 @@ fail() { echo "${bold}[fail]${reset} $*"; exit 1; }
 
 is_command() { command -v "$1" >/dev/null 2>&1; }
 
-# Open URL in default browser (macOS)
+# Open URL in default browser with error handling
 open_url() {
   local url="$1"
+  local name="${2:-URL}"
+  
+  log "Opening $name..."
+  
   if [[ "$(uname -s)" == "Darwin" ]]; then
-    open "$url"
+    if open "$url" 2>/dev/null; then
+      ok "Opened $name successfully"
+      if declare -f notify >/dev/null; then
+        notify "Stream Deck" "Opened $name" "Glass"
+      fi
+      return 0
+    else
+      fail "Failed to open $name"
+    fi
+  elif is_command xdg-open; then
+    if xdg-open "$url" 2>/dev/null; then
+      ok "Opened $name successfully"
+      if declare -f notify >/dev/null; then
+        notify "Stream Deck" "Opened $name"
+      fi
+      return 0
+    else
+      fail "Failed to open $name"
+    fi
+  elif [[ -n "$WINDOWS_HOST" ]] || [[ "$(uname -r)" == *"microsoft"* ]]; then
+    # WSL: Use Windows browser
+    if cmd.exe /c start "$url" 2>/dev/null; then
+      ok "Opened $name successfully"
+      return 0
+    else
+      fail "Failed to open $name"
+    fi
   else
-    if is_command xdg-open; then xdg-open "$url"; else echo "$url"; fi
+    warn "No browser opener found. URL: $url"
+    return 1
   fi
 }
 
@@ -62,8 +99,35 @@ app_exists() {
 
 launch_app() {
   local app_name="$1"
+  
+  log "Launching $app_name..."
+  
   if [[ "$(uname -s)" == "Darwin" ]]; then
-    open -a "$app_name"
+    if open -a "$app_name" 2>/dev/null; then
+      ok "Launched $app_name successfully"
+      if declare -f notify >/dev/null; then
+        notify "Stream Deck" "Launched $app_name" "Glass"
+      fi
+      return 0
+    else
+      warn "Failed to launch $app_name - it may not be installed"
+      return 1
+    fi
+  elif is_command "$app_name"; then
+    # Linux: Try to run directly if it's in PATH
+    if "$app_name" </dev/null >/dev/null 2>&1 &; then
+      ok "Launched $app_name successfully"
+      if declare -f notify >/dev/null; then
+        notify "Stream Deck" "Launched $app_name"
+      fi
+      return 0
+    else
+      warn "Failed to launch $app_name"
+      return 1
+    fi
+  else
+    warn "$app_name not found or not supported on this platform"
+    return 1
   fi
 }
 

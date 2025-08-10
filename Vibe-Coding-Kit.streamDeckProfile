@@ -1,0 +1,96 @@
+{
+  "ProfileUUID": "A7B8C9D0-1234-5678-90AB-CDEF12345678",
+  "AppIdentifier": "com.elgato.StreamDeck",
+  "Name": "Vibe Coding Kit",
+  "Version": "1.0.0",
+  "DeviceType": 0,
+  "DeviceUUID": "Mini",
+  "Columns": 3,
+  "Rows": 2,
+  "Actions": {
+    "0": {
+      "Name": "Sentry",
+      "UUID": "com.elgato.streamdeck.system.open",
+      "Settings": {
+        "openPath": "scripts/open-sentry.sh"
+      },
+      "State": 0,
+      "States": [{
+        "Image": "icons/sentry.png",
+        "Title": "Sentry",
+        "TitleAlignment": "bottom",
+        "FontSize": 12
+      }]
+    },
+    "1": {
+      "Name": "Bolt",
+      "UUID": "com.elgato.streamdeck.system.open",
+      "Settings": {
+        "openPath": "scripts/open-bolt.sh"
+      },
+      "State": 0,
+      "States": [{
+        "Image": "icons/bolt.png",
+        "Title": "Bolt",
+        "TitleAlignment": "bottom",
+        "FontSize": 12
+      }]
+    },
+    "2": {
+      "Name": "ChatGPT",
+      "UUID": "com.elgato.streamdeck.system.open",
+      "Settings": {
+        "openPath": "scripts/open-chatgpt.sh"
+      },
+      "State": 0,
+      "States": [{
+        "Image": "icons/chatgpt.png",
+        "Title": "ChatGPT",
+        "TitleAlignment": "bottom",
+        "FontSize": 12
+      }]
+    },
+    "3": {
+      "Name": "Ghostty",
+      "UUID": "com.elgato.streamdeck.system.open",
+      "Settings": {
+        "openPath": "scripts/install-launch-ghostty.sh"
+      },
+      "State": 0,
+      "States": [{
+        "Image": "icons/ghostty.png",
+        "Title": "Ghostty",
+        "TitleAlignment": "bottom",
+        "FontSize": 12
+      }]
+    },
+    "4": {
+      "Name": "Cursor",
+      "UUID": "com.elgato.streamdeck.system.open",
+      "Settings": {
+        "openPath": "scripts/install-launch-cursor.sh"
+      },
+      "State": 0,
+      "States": [{
+        "Image": "icons/cursor.png",
+        "Title": "Cursor",
+        "TitleAlignment": "bottom",
+        "FontSize": 12
+      }]
+    },
+    "5": {
+      "Name": "Claude Ext",
+      "UUID": "com.elgato.streamdeck.system.open",
+      "Settings": {
+        "openPath": "scripts/install-claude-code-extension.sh"
+      },
+      "State": 0,
+      "States": [{
+        "Image": "icons/claude.png",
+        "Title": "Claude",
+        "TitleAlignment": "bottom",
+        "FontSize": 12
+      }]
+    }
+  }
+}
